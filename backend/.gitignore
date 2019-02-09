@@ -1,5 +1,7 @@
 src/main/python/configfile.json
+#src/main/python/configfile.py
 .idea/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

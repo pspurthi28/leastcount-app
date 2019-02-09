@@ -1,11 +1,14 @@
 from src.main.python.domain import entities as lcc
-from src.main.python.datastore import connectionFactory, queries
+from src.main.python import configfile
+from src.main.python.datastore import connectionFactory as cF, queries
 
 
 def initialize_application():
     print("Starting application bootup")
-    db = connectionFactory.ConnectionFactory.initialize_db("configfile.json").getDatabase()
-    print(db.child("games").child("-LY0JNbQc9uAv5hQ2Nl3").get().val())
+    cF.ConnectionFactory.initialize_db(configfile.config())
+    #connection feedback
+    db = cF.ConnectionFactory.getDatabase()
+    #print(db.child("games").child("-LY0JNbQc9uAv5hQ2Nl3").get().val())
     print("Connected to DB: ", db.database_url)
     return db
 

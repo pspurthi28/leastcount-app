@@ -20,3 +20,7 @@ class Queries:
         data_saved = self.db.child("games").push(json.loads(game.to_json()))
         return data_saved["name"]
 
+    def update_game(self, game, game_id):
+        data_updated = self.db.child("games").child(game_id).update(json.loads(game.to_json()))
+        print(data_updated)
+        return data_updated
