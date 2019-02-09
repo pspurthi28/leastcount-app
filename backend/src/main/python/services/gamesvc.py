@@ -16,3 +16,4 @@ class GameService:
         player = entities.Player(playerID=generated_player_id, firstname=name, lastname=name)
         game.players.append(player)
         self.queryHandler.update_game(game, game_join_req['gameId'])
+        return {"gameId": game_join_req['gameId'], "playerId": generated_player_id}
