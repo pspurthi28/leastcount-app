@@ -17,3 +17,11 @@ class GameService:
         game.players.append(player)
         self.queryHandler.update_game(game, game_join_req['gameId'])
         return {"gameId": game_join_req['gameId'], "playerId": generated_player_id}
+
+    def create_game(self):
+        game = entities.Game()
+        gameId = self.queryHandler.save_game(game)
+        return {"gameId": gameId}
+
+    def create_round(self):
+        return ''

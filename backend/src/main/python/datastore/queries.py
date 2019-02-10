@@ -24,3 +24,4 @@ class Queries:
         data_updated = self.db.child("games").child(game_id).update(json.loads(game.to_json()))
         print(data_updated)
         return data_updated
+

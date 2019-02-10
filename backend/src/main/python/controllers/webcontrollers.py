@@ -15,28 +15,38 @@ class WebController:
         cF.ConnectionFactory.initialize_db(configfile.config())
 
     @cherrypy.tools.json_out()
-    @cherrypy.tools.accept(media='application/json')
-    def GET(self, gameId):
+    @cherrypy.tools.accept(media='text/html')
+    def get_game(self, gameId):
         game = q.Queries().get_game_by_game_id(gameId)
         return json.loads(game.to_json())
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self):
+    @cherrypy.tools.accept(media='application/json')
+    def join(self):
         rawData = cherrypy.request.json
         joinresp = gS.GameService().join_game(game_join_req=rawData)
-        print(rawData)
-        print(joinresp)
         return joinresp
 
-    def somemethod(self):
-        return ''
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def save_game(self):
+        saveresp = gS.GameService().create_game()
+        return saveresp
 
 
 if __name__ == '__main__':
+    d = cherrypy.dispatch.RoutesDispatcher()
+    web_controller = WebController()
+    d.connect(name='join', route='/join', controller=web_controller,
+              conditions=dict(method=['POST']), action="join")
+    d.connect(name='get_game', route='/find', controller=web_controller,
+              action='get_game', conditions=dict(method=['GET']))
+    d.connect('save_game', controller=web_controller, route='/create',
+              action='save_game', conditions=dict(method=['POST']))
     conf = {
         '/': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+            'request.dispatch': d,
             'tools.sessions.on': True,
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'application/json')],

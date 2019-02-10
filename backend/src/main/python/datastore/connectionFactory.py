@@ -1,5 +1,4 @@
 import pyrebase
-import json
 
 
 class ConnectionFactory:
