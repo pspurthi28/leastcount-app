@@ -19,7 +19,7 @@ class GameService:
         return {"gameId": game_join_req['gameId'], "playerId": generated_player_id}
 
     def create_game(self):
-        game = entities.Game()
+        game = entities.Game(players=[], rounds=[])
         gameId = self.queryHandler.save_game(game)
         return {"gameId": gameId}
 
