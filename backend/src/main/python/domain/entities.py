@@ -9,6 +9,10 @@ class Player:
     firstname: str
     lastname: str
 
+    @staticmethod
+    def get_default_winner():
+        return Player(playerID='BLAH', firstname='BLAH', lastname='BLAH')
+
 
 @dataclass_json
 @dataclass
@@ -20,21 +24,19 @@ class RoundScore:
 @dataclass_json
 @dataclass
 class Round:
+    scores: [RoundScore] = field(repr=False)
+    rWinner: Player = field(repr=False, default_factory=Player.get_default_winner)
     roundID: str = field(repr=False, default="0")
-    rWinner: Player = field(repr=False, default=None)
     showcount: int = field(repr=False, default=0)
-    scores: [RoundScore] = field(default_factory=list)
 
 
 @dataclass_json
 @dataclass
 class Game:
+    players: [Player] = field(repr=False)
+    rounds: [Round] = field(repr=False)
+    winner: Player = field(repr=False, default_factory=Player.get_default_winner)
     gameID: str = field(repr=False, default="NO_ID")
-    winner: Player = field(repr=False, default=None)
     wintotal: int = field(repr=False, default=-1)
     status: str = field(repr=False, default="running")
     threshold: int = field(default=300, repr=False)
-    rounds: [Round] = field(default_factory=list)
-    players: [Player] = field(default_factory=list)
-
-

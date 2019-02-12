@@ -6,8 +6,8 @@ class App extends Component {
 
   render() {
     return ([
-      <TopNavBar />,
-      <RecordScore/>]
+      <TopNavBar id={"navbar"} />,
+      <RecordScore id={"scoreentry"}/>]
     );
   }
 }
