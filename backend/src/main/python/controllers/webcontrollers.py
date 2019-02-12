@@ -25,7 +25,6 @@ class WebController:
     @cherrypy.tools.json_out()
     @cherrypy.tools.accept(media='application/json')
     def join(self):
-        print(cherrypy.request)
         if cherrypy.request.method == 'OPTIONS':
             return {}
         else:
@@ -36,8 +35,20 @@ class WebController:
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def save_game(self):
+        if cherrypy.request.method == 'OPTIONS':
+            return {}
         saveresp = gS.GameService().create_game()
         return saveresp
+
+    ## TODO -- Get game_id, player_id and his score from here and append to game's round's roundscore & then return the game itself
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def record_score(self):
+        if cherrypy.request.method == 'OPTIONS':
+            return {}
+        request_json = cherrypy.request.json
+        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        return json.loads(game.to_json())
 
 
 def CORS():
@@ -45,7 +56,8 @@ def CORS():
     cherrypy.response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, HEAD, OPTIONS, DELETE"
     cherrypy.response.headers["Access-Control-Allow-Headers"] = "*"
     cherrypy.response.headers["Access-Control-Expose-Headers"] = "*"
-    cherrypy.response.headers["Access-Control-Allow-Headers"] = "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
+    cherrypy.response.headers[
+        "Access-Control-Allow-Headers"] = "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
     return
 
 
@@ -57,17 +69,19 @@ def MIN_CORS():
 
 if __name__ == '__main__':
     cherrypy_cors.install()
-    d = cherrypy.dispatch.RoutesDispatcher()
+    routes_dispatcher = cherrypy.dispatch.RoutesDispatcher()
     web_controller = WebController()
-    d.connect(name='join', route='/join', controller=web_controller,
-              conditions=dict(method=['POST', 'OPTIONS']), action="join")
-    d.connect(name='get_game', route='/find', controller=web_controller,
-              action='get_game', conditions=dict(method=['GET', 'OPTIONS']))
-    d.connect('save_game', controller=web_controller, route='/create',
-              action='save_game', conditions=dict(method=['POST', 'OPTIONS']), )
+    routes_dispatcher.connect(name='join', route='/join', controller=web_controller,
+                              conditions=dict(method=['POST', 'OPTIONS']), action="join")
+    routes_dispatcher.connect(name='get_game', route='/find', controller=web_controller,
+                              action='get_game', conditions=dict(method=['GET', 'OPTIONS']))
+    routes_dispatcher.connect('save_game', controller=web_controller, route='/create',
+                              action='save_game', conditions=dict(method=['POST', 'OPTIONS']))
+    routes_dispatcher.connect('score', controller=web_controller, route='/score',
+                              action='record_score', conditions=dict(method=['POST', 'OPTIONS']))
     conf = {
         '/': {
-            'request.dispatch': d,
+            'request.dispatch': routes_dispatcher,
             'tools.sessions.on': True,
             'tools.response_headers.on': True,
             'tools.CORS.on': True,
