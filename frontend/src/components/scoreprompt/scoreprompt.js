@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Aux from '../../hoc/auxFile';
 import TextField from '@material-ui/core/TextField';
+import ApiClient from '../client/apiclient';
 
 class ScorePrompt extends Component {
     state = {
@@ -22,7 +23,12 @@ class ScorePrompt extends Component {
     };
 
     joinGameHandler = (event) => {
-
+        ApiClient.joinGame(this.state.gameId, this.state.playerName).then((data) => {
+            console.log("Game Joined: "+ data.gameId)
+            console.log("Player Created: "+ data.playerId);
+            sessionStorage.setItem("lcappGameInfo", JSON.stringify(data));
+        });
+        this.handleClose();
     };
 
     gameIdChange = (event) => {
@@ -47,7 +53,7 @@ class ScorePrompt extends Component {
                     <DialogTitle id="alert-dialog-title">{"Identify yourself"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            <div> Please enter Game Id & Name </div>
+                            <span> Please enter Game Id & Name </span>
                             <TextField
                                 style={{'marginRight' : '5px'}}
                                 id="outlined-gameID-input"
@@ -72,12 +78,12 @@ class ScorePrompt extends Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>                        
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Join 
-                        </Button>
                         <Button onClick={this.handleClose} color="primary">
                             Close
                         </Button>
+                        <Button onClick={this.joinGameHandler} color="primary" autoFocus>
+                            Join 
+                        </Button>                        
                     </DialogActions>
                 </Dialog>
             </Aux>
