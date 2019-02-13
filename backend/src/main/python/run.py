@@ -1,4 +1,4 @@
-from src.main.python.domain import entities as lcc
+from domain import entities as lcc
 from src.main.python import configfile
 from src.main.python.datastore import connectionFactory as cF, queries
 
@@ -33,8 +33,17 @@ def create_game():
     return game1
 
 
-db = initialize_application()
-game = create_game()
-quers = queries.Queries()
-print(quers.save_game(game))
+if __name__ == '__main__':
+    import sys
+    import os
+    cwd = os.getcwd()
+    print(cwd)
+    domain_dir = os.path.join(cwd, r'domain')
+    print(domain_dir)
+    sys.path.append(cwd)
+    sys.path.append(domain_dir)
+    db = initialize_application()
+    game = create_game()
+    quers = queries.Queries()
+    print(quers.save_game(game))
 
