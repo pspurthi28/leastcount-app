@@ -2,12 +2,27 @@ import React from 'react';
 
 const ApiClient = {
 
+    APP_ROOT : "http://localhost:8080",
+
     joinGame(gameId, playerName) {
-        let url = "http://localhost:8080/games/join"
+        let url = ApiClient.APP_ROOT+"/games/join"
         let params = {
             'gameId' : gameId,
             'name' : playerName
         }
+        return ApiClient.fetchCall(url, 'POST', params);
+    },
+
+    recordScore(score){
+        let params = {};
+        let playerProfile = sessionStorage.getItem('playerProfile');
+        if(playerProfile){
+            params = JSON.parse(playerProfile)
+        }
+        if(params){
+            params['score'] = score;
+        }
+        let url =  ApiClient.APP_ROOT + "/games/score"
         return ApiClient.fetchCall(url, 'POST', params);
     },
 

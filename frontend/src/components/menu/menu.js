@@ -5,7 +5,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 class SimpleMenu extends React.Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    tabSelected : "Home"
   };
 
   handleClick = event => {
@@ -28,9 +29,9 @@ class SimpleMenu extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>Home</MenuItem>
-          <MenuItem onClick={this.handleClose}>Dashboard</MenuItem>
-          <MenuItem onClick={this.handleClose}>Admin</MenuItem>
+          <MenuItem onClick={this.handleClose} id="0">Home</MenuItem>
+          <MenuItem onClick={this.handleClose} id="1">Dashboard</MenuItem>
+          <MenuItem onClick={this.handleClose} id="2">Admin</MenuItem>
         </Menu>
       </div>
     );

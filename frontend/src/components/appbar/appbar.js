@@ -9,19 +9,6 @@ import ScorePrompt from '../scoreprompt/scoreprompt'
 
 class TopNavBar extends Component {
 
-  state = {
-    anchorEl: null,
-    gameId: null
-  };
-
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
   classes = {
     root: {
       flexGrow: 1,

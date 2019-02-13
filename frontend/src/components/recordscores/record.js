@@ -6,34 +6,69 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core';
+import ApiClient from '../client/apiclient';
+import ScoreXtractor from '../charts/scorexctractor';
+import HeatMapChart from '../charts/heatmap/heatmapchart';
 
 
 class RecordScore extends Component {
+    
+    constructor(props) {
+        super(props);
+    }
 
     state = {
-        score : null
+        score: null,
+        showGraph: false,
+        heatMapData: {}
     }
 
     scoreChange = (event) => {
-        this.setState({score : event.target.value})
+        this.setState({ score: event.target.value })
+    }
+
+    scoreEnterHandler = (event) => {
+        ApiClient.recordScore(this.state.score).then((data) => {
+            let mapData = ScoreXtractor.getTotalsHeatMap(data)
+            this.setState({ showGraph: true, score: null, heatMapData: mapData });
+            console.log(mapData);
+        });
     }
 
     render() {
+        let scorecard = this.getScoreCard();
+        let renderContent = scorecard
+        if (this.state.showGraph) {
+            renderContent =
+                <div>
+                    {scorecard}
+                    <Grid style={{ 'marginTop': '10px' }}
+                        container
+                        direction="column"
+                        alignItems="center"
+                        justify="center"
+                        style={{ 'height': '500px'}}>
+                        <HeatMapChart mapData={this.state.heatMapData} mapLegendKey="round" />
+                    </Grid>
+                </div>
+        }
+        return renderContent;
+    }
+
+    getScoreCard() {
         return (
-            <Grid   style={{'marginTop' : '10px'}}
-                    container
-                    direction="column"
-                    alignItems="center"
-                    justify="center" >
+            <Grid style={{ 'marginTop': '10px' }}
+                container
+                direction="column"
+                alignItems="center"
+                justify="center" >
                 <Card style={{ 'minWidth': 275 }}>
                     <CardContent>
-                        <Typography color="textSecondary" gutterBottom>
-                            Enter Scores
-                        </Typography>
-                        <Typography variant="h5" component="h2">
-                            Score:
+                        <Typography color="textPrimary" gutterBottom variant="h6" align="center">
+                            Do one proud
                         </Typography>
                         <TextField
+                            style={{ 'justifyContent': 'center' }}
                             id="outlined-round-input"
                             label="Score"
                             type="text"
@@ -42,14 +77,14 @@ class RecordScore extends Component {
                             margin="normal"
                             variant="outlined"
                             onChange={this.scoreChange}
+                            value={this.state.score ? this.state.score : ''}
                         />
                     </CardContent>
-                    <CardActions>
-                        <Button  size="small">Enter</Button>
+                    <CardActions style={{ 'justifyContent': 'center' }}>
+                        <Button variant="contained" color="primary" size="small" onClick={this.scoreEnterHandler} align="center">Enter</Button>
                     </CardActions>
                 </Card>
-            </Grid>
-        );
+            </Grid>);
     }
 }
 
