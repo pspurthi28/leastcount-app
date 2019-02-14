@@ -9,6 +9,10 @@ import ScorePrompt from '../scoreprompt/scoreprompt'
 
 class TopNavBar extends Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   classes = {
     root: {
       flexGrow: 1,
@@ -28,7 +32,7 @@ class TopNavBar extends Component {
         <AppBar position="static" style={{'backgroundColor' : '#2196f3'}}>
           <Toolbar>
             <IconButton style={{ marginLeft: -12, marginRight: 20 }} color="inherit" aria-label="Menu">
-              <SimpleMenu />
+              <SimpleMenu {...this.props} />
             </IconButton>
             <Typography variant="h6" color="inherit" style={{ 'flexGrow': 1 }} >
               LC

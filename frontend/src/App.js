@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TopNavBar from './components/appbar/appbar';
-import RecordScore from './components/recordscores/record'
+import RecordScore from './components/recordscores/record';
+import Admin from './components/admin/admin';
 
 class App extends Component {
 
@@ -9,7 +10,8 @@ class App extends Component {
   }
 
   tabChangeHandler = (tabIndex) => {
-    this.setState({ currentTab: tabIndex })
+    console.log(tabIndex);
+    this.setState({ currentTab: tabIndex });
   }
 
   render() {
@@ -17,12 +19,12 @@ class App extends Component {
     if (this.state.currentTab == "1") {
       //TODO put dashboard here
     } else if (this.state.currentTab == "2") {
-      //TODO put admin here
+      displayTab =  <Admin key={"adminContent"} />
     }
 
     return (
     <div>
-      <TopNavBar key={"navbar"} />
+      <TopNavBar key={"navbar"} tabChangeHandler = {this.tabChangeHandler}/>
       {displayTab}
     </div>
     );

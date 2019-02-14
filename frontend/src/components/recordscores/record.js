@@ -5,14 +5,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Grid } from '@material-ui/core';
+import { Grid, Tooltip } from '@material-ui/core';
 import ApiClient from '../client/apiclient';
 import ScoreXtractor from '../charts/scorexctractor';
 import HeatMapChart from '../charts/heatmap/heatmapchart';
+import Switch from '@material-ui/core/Switch';
 
 
 class RecordScore extends Component {
-    
+
     constructor(props) {
         super(props);
     }
@@ -20,7 +21,8 @@ class RecordScore extends Component {
     state = {
         score: null,
         showGraph: false,
-        heatMapData: {}
+        heatMapData: {},
+        isShow: false
     }
 
     scoreChange = (event) => {
@@ -35,6 +37,10 @@ class RecordScore extends Component {
         });
     }
 
+    showSwitchToggle = () => {
+        this.setState({ isShow: !this.state.isShow })
+    }
+
     render() {
         let scorecard = this.getScoreCard();
         let renderContent = scorecard
@@ -47,7 +53,7 @@ class RecordScore extends Component {
                         direction="column"
                         alignItems="center"
                         justify="center"
-                        style={{ 'height': '500px'}}>
+                        style={{ 'height': '500px' }}>
                         <HeatMapChart mapData={this.state.heatMapData} mapLegendKey="round" />
                     </Grid>
                 </div>
@@ -81,6 +87,12 @@ class RecordScore extends Component {
                         />
                     </CardContent>
                     <CardActions style={{ 'justifyContent': 'center' }}>
+                        <Tooltip title="Show" aria-label="Show" placement="bottom">
+                            <Switch
+                                checked={this.state.isShow}
+                                onChange={this.showSwitchToggle}
+                            />
+                        </Tooltip>
                         <Button variant="contained" color="primary" size="small" onClick={this.scoreEnterHandler} align="center">Enter</Button>
                     </CardActions>
                 </Card>

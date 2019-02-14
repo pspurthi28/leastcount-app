@@ -4,6 +4,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuIcon from '@material-ui/icons/Menu';
 
 class SimpleMenu extends React.Component {
+
+  constructor(props){
+    super(props);
+  }
+
   state = {
     anchorEl: null,
     tabSelected : "Home"
@@ -13,7 +18,8 @@ class SimpleMenu extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = () => {
+  handleClose = (event) => {
+    this.props.tabChangeHandler(event.target.id);
     this.setState({ anchorEl: null });
   };
 
