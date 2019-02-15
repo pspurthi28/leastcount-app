@@ -3,13 +3,16 @@ import { ResponsiveHeatMap } from '@nivo/heatmap'
 
 export default class HeatMapChart extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
-    render(){
-        if(this.props.mapData){
-            return this.getMap(this.props.mapData, this.getKeysFromData(this.props.mapData, this.props.mapLegendKey), this.props.mapLegendKey);
+    render() {
+        if (this.props.mapData) {
+            return this.getMap(
+                this.props.mapData, 
+                this.getKeysFromData(this.props.mapData, this.props.mapLegendKey), 
+                this.props.mapLegendKey);
         } else {
             return (<div></div>);
         }
@@ -17,10 +20,10 @@ export default class HeatMapChart extends Component {
     }
 
     //TODO: return keys
-    getKeysFromData(mapData, indexValue){
+    getKeysFromData(mapData, indexValue) {
         let keys = Object.keys(mapData[0]);
         let idx = keys.indexOf(indexValue)
-        if(idx > -1){
+        if (idx > -1) {
             keys.splice(idx, 1)
         }
         return keys;
