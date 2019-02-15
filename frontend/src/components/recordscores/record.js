@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { Grid, Tooltip } from '@material-ui/core';
-import ApiClient from '../client/apiclient';
 import ScoreXtractor from '../charts/scorexctractor';
 import HeatMapChart from '../charts/heatmap/heatmapchart';
 import Switch from '@material-ui/core/Switch';
@@ -20,9 +19,7 @@ class RecordScore extends Component {
 
     state = {
         score: null,
-        showGraph: false,
-        heatMapData: {},
-        isShow: false
+        showCards: false
     }
 
     scoreChange = (event) => {
@@ -30,21 +27,18 @@ class RecordScore extends Component {
     }
 
     scoreEnterHandler = (event) => {
-        ApiClient.recordScore(this.state.score).then((data) => {
-            let mapData = ScoreXtractor.getTotalsHeatMap(data)
-            this.setState({ showGraph: true, score: null, heatMapData: mapData });
-            console.log(mapData);
-        });
+        this.props.recordPlayerScoreHandler(this.state.score);
+        this.setState({score : null, showCards : false});
     }
 
     showSwitchToggle = () => {
-        this.setState({ isShow: !this.state.isShow })
+        this.setState({ isShow: !this.state.showCards });
     }
 
     render() {
         let scorecard = this.getScoreCard();
         let renderContent = scorecard
-        if (this.state.showGraph) {
+        if (this.props.currentGame.activeGame) {
             renderContent =
                 <div>
                     {scorecard}
@@ -54,7 +48,7 @@ class RecordScore extends Component {
                         alignItems="center"
                         justify="center"
                         style={{ 'height': '500px' }}>
-                        <HeatMapChart mapData={this.state.heatMapData} mapLegendKey="round" />
+                        <HeatMapChart mapData={ScoreXtractor.getTotalsHeatMap(this.props.currentGame.activeGame)} mapLegendKey="round" />
                     </Grid>
                 </div>
         }
@@ -89,7 +83,7 @@ class RecordScore extends Component {
                     <CardActions style={{ 'justifyContent': 'center' }}>
                         <Tooltip title="Show" aria-label="Show" placement="bottom">
                             <Switch
-                                checked={this.state.isShow}
+                                checked={this.state.showCards}
                                 onChange={this.showSwitchToggle}
                             />
                         </Tooltip>
