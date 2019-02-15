@@ -57,6 +57,7 @@ def create_game():
 
 
 if __name__ == '__main__':
+    initialize_app()
     create_game()
     #-LYYllq4tGAVTs0SIGQQ
 
