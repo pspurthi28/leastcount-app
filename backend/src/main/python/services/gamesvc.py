@@ -94,6 +94,7 @@ class GameService:
             playertotals.append({"player": p, "total": total})
         return playertotals
 
+
     def end_game(self,gameid):
         game_class = self.queryHandler.get_game_by_game_id(gameid)
         playtots = self.game_totals(gameid)
