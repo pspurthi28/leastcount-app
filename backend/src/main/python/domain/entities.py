@@ -19,6 +19,7 @@ class Player:
 class RoundScore:
     player: Player
     score: int
+    isshow: bool = False
 
 
 @dataclass_json
@@ -28,6 +29,7 @@ class Round:
     rWinner: Player = field(repr=False, default_factory=Player.get_default_winner)
     roundID: str = field(repr=False, default="0")
     showcount: int = field(repr=False, default=0)
+    isCompleted: bool = False
 
 
 @dataclass_json
