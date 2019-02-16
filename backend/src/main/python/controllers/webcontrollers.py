@@ -40,44 +40,40 @@ class WebController:
         saveresp = gS.GameService().create_game()
         return saveresp
 
-    ## TODO -- Get game_id, player_id and his score from here and append to game's round's roundscore & then return the game itself
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def record_score(self):
         if cherrypy.request.method == 'OPTIONS':
             return {}
         request_json = cherrypy.request.json
-        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        game = gS.GameService().player_score(request_json)
         return json.loads(game.to_json())
 
-    ## TODO -- Get game_id, add round to game & then return the game itself
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def create_round(self):
         if cherrypy.request.method == 'OPTIONS':
             return {}
         request_json = cherrypy.request.json
-        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        game = gS.GameService().create_round(request_json['gameId'])
         return json.loads(game.to_json())
 
-    ## TODO -- Get game_id, mark active round complete, elect winner & then return the game itself
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def complete_round(self):
         if cherrypy.request.method == 'OPTIONS':
             return {}
         request_json = cherrypy.request.json
-        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        game = gS.GameService().end_round(request_json['gameId'])
         return json.loads(game.to_json())
 
-    ## TODO -- Get game_id, mark active round complete if any elect round winner if any, then mark game complete, elect game winner & then return the game itself
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def complete_game(self):
         if cherrypy.request.method == 'OPTIONS':
             return {}
         request_json = cherrypy.request.json
-        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        game = gS.GameService().end_game(request_json['gameId'])
         return json.loads(game.to_json())
 
 

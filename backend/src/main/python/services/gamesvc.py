@@ -31,7 +31,8 @@ class GameService:
         rID = str(len(game.rounds)+1)
         round = entities.Round(scores=[], roundID=rID)
         game.rounds.append(round)
-        return self.queryHandler.update_game(game=game, game_id=gameId)
+        self.queryHandler.update_game(game=game, game_id=gameId)
+        return self.queryHandler.get_game_by_game_id(gameId)
 
     def player_score(self, rnd_scr_req):
         game_class = self.queryHandler.get_game_by_game_id(rnd_scr_req['gameId'])
