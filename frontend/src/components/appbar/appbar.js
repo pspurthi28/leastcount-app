@@ -9,18 +9,9 @@ import ScorePrompt from '../scoreprompt/scoreprompt'
 
 class TopNavBar extends Component {
 
-  state = {
-    anchorEl: null,
-    gameId: null
-  };
-
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+  constructor(props) {
+    super(props);
+  }
 
   classes = {
     root: {
@@ -41,7 +32,7 @@ class TopNavBar extends Component {
         <AppBar position="static" style={{'backgroundColor' : '#2196f3'}}>
           <Toolbar>
             <IconButton style={{ marginLeft: -12, marginRight: 20 }} color="inherit" aria-label="Menu">
-              <SimpleMenu />
+              <SimpleMenu {...this.props} />
             </IconButton>
             <Typography variant="h6" color="inherit" style={{ 'flexGrow': 1 }} >
               LC

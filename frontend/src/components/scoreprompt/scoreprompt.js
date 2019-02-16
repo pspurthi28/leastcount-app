@@ -26,7 +26,7 @@ class ScorePrompt extends Component {
         ApiClient.joinGame(this.state.gameId, this.state.playerName).then((data) => {
             console.log("Game Joined: "+ data.gameId)
             console.log("Player Created: "+ data.playerId);
-            sessionStorage.setItem("lcappGameInfo", JSON.stringify(data));
+            sessionStorage.setItem("playerProfile", JSON.stringify(data));
         });
         this.handleClose();
     };
@@ -53,8 +53,9 @@ class ScorePrompt extends Component {
                     <DialogTitle id="alert-dialog-title">{"Identify yourself"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            <span> Please enter Game Id & Name </span>
-                            <TextField
+                            Please enter Game Id & Name                            
+                        </DialogContentText>
+                        <TextField
                                 style={{'marginRight' : '5px'}}
                                 id="outlined-gameID-input"
                                 label="Game ID"
@@ -65,23 +66,22 @@ class ScorePrompt extends Component {
                                 variant="outlined"
                                 onChange={this.gameIdChange}
                                 />
-                            <TextField
-                                id="outlined-name-input"
-                                label="Name"
-                                type="text"
-                                name="name"
-                                autoComplete="Name"
-                                margin="normal"
-                                variant="outlined"
-                                onChange={this.nameChange}
-                                />
-                        </DialogContentText>
+                        <TextField
+                            id="outlined-name-input"
+                            label="Name"
+                            type="text"
+                            name="name"
+                            autoComplete="Name"
+                            margin="normal"
+                            variant="outlined"
+                            onChange={this.nameChange}
+                            />
                     </DialogContent>
                     <DialogActions>                        
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.handleClose} color="secondary" variant="contained">
                             Close
                         </Button>
-                        <Button onClick={this.joinGameHandler} color="primary" autoFocus>
+                        <Button onClick={this.joinGameHandler} color="primary" autoFocus variant="contained">
                             Join 
                         </Button>                        
                     </DialogActions>

@@ -2,11 +2,61 @@ import React from 'react';
 
 const ApiClient = {
 
+    APP_ROOT: "http://172.31.206.36:8080",
+
     joinGame(gameId, playerName) {
-        let url = "http://localhost:8080/games/join"
+        let url = ApiClient.APP_ROOT + "/games/join"
         let params = {
-            'gameId' : gameId,
-            'name' : playerName
+            'gameId': gameId,
+            'name': playerName
+        }
+        return ApiClient.fetchCall(url, 'POST', params);
+    },
+
+    recordScore(score) {
+        let params = {};
+        let playerProfile = sessionStorage.getItem('playerProfile');
+        if (playerProfile) {
+            params = JSON.parse(playerProfile)
+        }
+        if (params) {
+            params['score'] = score;
+        }
+        let url = ApiClient.APP_ROOT + "/games/score"
+        return ApiClient.fetchCall(url, 'POST', params);
+    },
+
+    createGame() {
+        let url = ApiClient.APP_ROOT + "/games/create"
+        return ApiClient.fetchCall(url, 'POST', {});
+    },
+
+    addRoundToGame() {
+        let params = {};
+        let url = ApiClient.APP_ROOT + "/games/rounds/create"
+        let gameInfo = sessionStorage.getItem('gameId');
+        if (gameInfo) {
+            params = JSON.parse(gameInfo)
+        }
+        return ApiClient.fetchCall(url, 'POST', params);
+    },
+
+    markRoundComplete() {
+        let params = {};
+        let url = ApiClient.APP_ROOT + "/games/rounds/complete"
+        let gameInfo = sessionStorage.getItem('gameId');
+        if (gameInfo) {
+            params = JSON.parse(gameInfo)
+        }
+        return ApiClient.fetchCall(url, 'POST', params);
+    },
+
+    markGameComplete() {
+        let params = {};
+        let url = ApiClient.APP_ROOT + "/games/complete"
+        let gameInfo = sessionStorage.getItem('gameId');
+        if (gameInfo) {
+            params = JSON.parse(gameInfo)
         }
         return ApiClient.fetchCall(url, 'POST', params);
     },
@@ -19,7 +69,7 @@ const ApiClient = {
                 'Content-Type': 'application/json'
             }
         });
-    return await response.json()
+        return await response.json()
     },
 };
 

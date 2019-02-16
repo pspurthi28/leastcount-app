@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import TopNavBar from './components/appbar/appbar';
-import RecordScore from './components/recordscores/record'
+import GameParent from './containers/gameparent';
 
 class App extends Component {
 
-  render() {
-    return ([
-      <TopNavBar id={"navbar"} />,
-      <RecordScore id={"scoreentry"}/>]
-    );
+  render(){
+    return <GameParent/>
   }
 }
 

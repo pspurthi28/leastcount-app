@@ -50,6 +50,36 @@ class WebController:
         game = q.Queries().get_game_by_game_id(request_json['gameId'])
         return json.loads(game.to_json())
 
+    ## TODO -- Get game_id, add round to game & then return the game itself
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def create_round(self):
+        if cherrypy.request.method == 'OPTIONS':
+            return {}
+        request_json = cherrypy.request.json
+        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        return json.loads(game.to_json())
+
+    ## TODO -- Get game_id, mark active round complete, elect winner & then return the game itself
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def complete_round(self):
+        if cherrypy.request.method == 'OPTIONS':
+            return {}
+        request_json = cherrypy.request.json
+        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        return json.loads(game.to_json())
+
+    ## TODO -- Get game_id, mark active round complete if any elect round winner if any, then mark game complete, elect game winner & then return the game itself
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def complete_game(self):
+        if cherrypy.request.method == 'OPTIONS':
+            return {}
+        request_json = cherrypy.request.json
+        game = q.Queries().get_game_by_game_id(request_json['gameId'])
+        return json.loads(game.to_json())
+
 
 def CORS():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
@@ -79,6 +109,13 @@ if __name__ == '__main__':
                               action='save_game', conditions=dict(method=['POST', 'OPTIONS']))
     routes_dispatcher.connect('score', controller=web_controller, route='/score',
                               action='record_score', conditions=dict(method=['POST', 'OPTIONS']))
+    routes_dispatcher.connect('complete_game', controller=web_controller, route='/complete',
+                              action='complete_game', conditions=dict(method=['POST', 'OPTIONS']))
+    routes_dispatcher.connect('complete_round', controller=web_controller, route='/round/complete',
+                              action='complete_round', conditions=dict(method=['POST', 'OPTIONS']))
+    routes_dispatcher.connect('create_round', controller=web_controller, route='/round/create',
+                              action='create_round', conditions=dict(method=['POST', 'OPTIONS']))
+
     conf = {
         '/': {
             'request.dispatch': routes_dispatcher,
@@ -90,5 +127,6 @@ if __name__ == '__main__':
     }
     cherrypy.tools.CORS = cherrypy.Tool('before_handler', MIN_CORS)
     cherrypy.tree.mount(WebController(), '/games', conf)
+    cherrypy.config.update({'server.socket_host': '0.0.0.0'})
     cherrypy.engine.start()
     cherrypy.engine.block()
