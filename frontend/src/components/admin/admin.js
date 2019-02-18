@@ -21,38 +21,24 @@ export default class Admin extends Component {
         }
     }
 
-    sampledata = [
-        {
-            roundID: 1,
-            rWinner: {
-                firstname: 'SK'
-            },
-            showcount: 5,
-            status: "Completed"
-        }
-    ]
-
-    createGameHandler = (event) => {
-        console.log("Create Game clicked");
-    }
-
     getGameId() {
         let renderContent = "";
+        let gameId = this.props.currentGame.activeGameId ? this.props.currentGame.activeGameId : '';
         renderContent =
             <Grid item xs={12}>
                 <Paper>
                     <Typography variant="subtitle2" >
-                        Game Id:
+                        Game Id: {gameId}
                     </Typography>
                 </Paper>
             </Grid>
         return renderContent;
     }
 
-    getTableContent(data) {
+    getTableContent(currentGame) {
         let table = <div></div>
-        //figure if table needs to be displayed, get game data and rounds and display data accordingly
-        if (true) {
+        if(currentGame && currentGame.activeGame && currentGame.activeGame.rounds && currentGame.activeGame.rounds.length > 0) {
+            let data = currentGame.activeGame.rounds
             table =
                 <Grid item xs={12}>
                     <Table>
@@ -70,7 +56,7 @@ export default class Admin extends Component {
                                     <TableCell align="right">{row.roundID}</TableCell>
                                     <TableCell align="right">{row.rWinner.firstname}</TableCell>
                                     <TableCell align="right">{row.showcount}</TableCell>
-                                    <TableCell align="right">{row.status}</TableCell>
+                                    <TableCell align="right">{row.isCompleted ? 'Completed' : 'Running'}</TableCell>
                                 </TableRow>
                             })}
                         </TableBody>
@@ -112,7 +98,7 @@ export default class Admin extends Component {
                     </Tooltip>
                 </GridList >
                 {this.getGameId()}
-                {this.getTableContent(this.sampledata)}
+                {this.getTableContent(this.props.currentGame)}
             </Grid>
         );
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TopNavBar from '../appbar/appbar';
 import RecordScore from '../recordscores/record';
 import Admin from '../admin/admin';
+import Dashboard from '../dashboard/dashboard';
 
 class Layout extends Component {
 
@@ -21,7 +22,7 @@ class Layout extends Component {
   render() {
     let displayTab = <RecordScore key={"scoreentry"} {...this.props} />
     if (this.state.currentTab === "1") {
-      //TODO put dashboard here
+      displayTab = <Dashboard key={"dashboard"} {...this.props} />
     } else if (this.state.currentTab === "2") {
       displayTab =  <Admin key={"adminContent"} {...this.props} />
     }

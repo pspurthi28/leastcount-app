@@ -37,7 +37,7 @@ class TopNavBar extends Component {
             <Typography variant="h6" color="inherit" style={{ 'flexGrow': 1 }} >
               LC
             </Typography>            
-            <ScorePrompt/>
+            <ScorePrompt {...this.props}/>
           </Toolbar>
         </AppBar>
       </div>

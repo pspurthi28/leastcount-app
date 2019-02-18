@@ -2,7 +2,7 @@ import React from 'react';
 
 const ApiClient = {
 
-    APP_ROOT: "http://172.31.206.36:8080",
+    APP_ROOT: "http://192.168.86.116:8080",
 
     joinGame(gameId, playerName) {
         let url = ApiClient.APP_ROOT + "/games/join"
@@ -13,6 +13,12 @@ const ApiClient = {
         return ApiClient.fetchCall(url, 'POST', params);
     },
 
+    async getGameByGameId(gameId) {
+        let url = ApiClient.APP_ROOT + "/games/find?gameId=" + gameId;
+        let response = await fetch(url);
+        return response.json();
+    },
+
     recordScore(score) {
         let params = {};
         let playerProfile = sessionStorage.getItem('playerProfile');
@@ -20,7 +26,7 @@ const ApiClient = {
             params = JSON.parse(playerProfile)
         }
         if (params) {
-            params['score'] = score;
+            params['score'] = parseInt(score);
         }
         let url = ApiClient.APP_ROOT + "/games/score"
         return ApiClient.fetchCall(url, 'POST', params);
@@ -33,7 +39,7 @@ const ApiClient = {
 
     addRoundToGame() {
         let params = {};
-        let url = ApiClient.APP_ROOT + "/games/rounds/create"
+        let url = ApiClient.APP_ROOT + "/games/round/create"
         let gameInfo = sessionStorage.getItem('gameId');
         if (gameInfo) {
             params = JSON.parse(gameInfo)
@@ -43,7 +49,7 @@ const ApiClient = {
 
     markRoundComplete() {
         let params = {};
-        let url = ApiClient.APP_ROOT + "/games/rounds/complete"
+        let url = ApiClient.APP_ROOT + "/games/round/complete"
         let gameInfo = sessionStorage.getItem('gameId');
         if (gameInfo) {
             params = JSON.parse(gameInfo)

@@ -8,7 +8,7 @@ export default class HeatMapChart extends Component {
     }
 
     render() {
-        if (this.props.mapData) {
+        if (this.props.mapData && this.props.mapData.length > 0) {
             return this.getMap(
                 this.props.mapData, 
                 this.getKeysFromData(this.props.mapData, this.props.mapLegendKey), 
@@ -19,7 +19,6 @@ export default class HeatMapChart extends Component {
 
     }
 
-    //TODO: return keys
     getKeysFromData(mapData, indexValue) {
         let keys = Object.keys(mapData[0]);
         let idx = keys.indexOf(indexValue)

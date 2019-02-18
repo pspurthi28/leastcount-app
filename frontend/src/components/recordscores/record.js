@@ -9,9 +9,23 @@ import { Grid, Tooltip } from '@material-ui/core';
 import ScoreXtractor from '../charts/scorexctractor';
 import HeatMapChart from '../charts/heatmap/heatmapchart';
 import Switch from '@material-ui/core/Switch';
+import PieChart from '../charts/piechart/piechart';
 
 
 class RecordScore extends Component {
+
+    componentDidMount(){
+        if(sessionStorage.getItem('playerProfile') || sessionStorage.getItem('gameId')){
+            if(!this.props.currentGame.activeGame || !this.props.currentGame.activeGameId){
+                let gameIdJson = sessionStorage.getItem('gameId');
+                if(gameIdJson) {
+                    this.props.reconcileGameData(JSON.parse(gameIdJson)['gameId'])
+                } else {
+                    this.props.reconcileGameData(JSON.parse(sessionStorage.getItem('playerProfile'))['gameId'])
+                }
+            }
+        }
+    }
 
     constructor(props) {
         super(props);
@@ -32,7 +46,7 @@ class RecordScore extends Component {
     }
 
     showSwitchToggle = () => {
-        this.setState({ isShow: !this.state.showCards });
+        this.setState({ showCards: !this.state.showCards });
     }
 
     render() {
@@ -42,13 +56,8 @@ class RecordScore extends Component {
             renderContent =
                 <div>
                     {scorecard}
-                    <Grid style={{ 'marginTop': '10px' }}
-                        container
-                        direction="column"
-                        alignItems="center"
-                        justify="center"
-                        style={{ 'height': '500px' }}>
-                        <HeatMapChart mapData={ScoreXtractor.getTotalsHeatMap(this.props.currentGame.activeGame)} mapLegendKey="round" />
+                    <Grid style={{ 'marginTop': '10px' }}>
+                         <PieChart mapData={ScoreXtractor.getPieMapInfo(this.props.currentGame.activeGame)} />   
                     </Grid>
                 </div>
         }

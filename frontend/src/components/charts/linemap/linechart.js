@@ -31,7 +31,7 @@ export default class LineChart extends Component {
             yScale={{
                 "type": "linear",
                 "stacked": true,
-                "min": "auto",
+                "min": 0,
                 "max": "auto"
             }}
             axisTop={null}
@@ -41,7 +41,7 @@ export default class LineChart extends Component {
                 "tickSize": 5,
                 "tickPadding": 5,
                 "tickRotation": 0,
-                "legend": "transportation",
+                "legend": "round",
                 "legendOffset": 36,
                 "legendPosition": "middle"
             }}

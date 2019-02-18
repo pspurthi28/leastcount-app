@@ -23,11 +23,7 @@ class ScorePrompt extends Component {
     };
 
     joinGameHandler = (event) => {
-        ApiClient.joinGame(this.state.gameId, this.state.playerName).then((data) => {
-            console.log("Game Joined: "+ data.gameId)
-            console.log("Player Created: "+ data.playerId);
-            sessionStorage.setItem("playerProfile", JSON.stringify(data));
-        });
+        this.props.joinGameHandler(this.state.gameId, this.state.playerName);
         this.handleClose();
     };
 

@@ -10,9 +10,9 @@ export default class GameParent extends Component {
     }
 
     createGameHandler = () => {
-        Apiclient.createGame().then(gameId => {
-            sessionStorage.setItem('gameId', gameId);
-            this.setState({ activeGame: null, activeGameId: gameId });
+        Apiclient.createGame().then(data => {
+            sessionStorage.setItem("gameId", JSON.stringify(data));
+            this.setState({ activeGame: null, activeGameId: data.gameId });
         });
     }
 
@@ -39,7 +39,8 @@ export default class GameParent extends Component {
             console.log("Game Joined: "+ data.gameId)
             console.log("Player Created: "+ data.playerId);
             sessionStorage.setItem("playerProfile", JSON.stringify(data));
-            this.setState({'activeGameId' : data.gameId});          
+            sessionStorage.setItem("gameId", JSON.stringify({'gameId' : gameId}));
+            this.setState({activeGameId : data.gameId});          
         });
     }
 
@@ -48,8 +49,14 @@ export default class GameParent extends Component {
             let mapData = ScoreXtractor.getTotalsHeatMap(data);
             let lineMapData = ScoreXtractor.getDataForLineMap(data);
             console.log(lineMapData);
-            this.setState({ activeGame : data });
+            this.setState({ activeGame : data, activeGameId : data.gameID });
             console.log(mapData);
+        });
+    }
+
+    reconcileGameData = (gameId) => {
+        Apiclient.getGameByGameId(gameId).then((gamedata) => {
+            this.setState({ activeGame: gamedata, activeGameId : gamedata.gameID });
         });
     }
 
@@ -61,6 +68,8 @@ export default class GameParent extends Component {
             gameCompleteMarker={this.gameCompleteMarker}
             recordPlayerScoreHandler={this.recordPlayerScoreHandler}
             currentGame={this.state}
+            reconcileGameData = {this.reconcileGameData}
+            joinGameHandler={this.joinGameHandler}
         />
     }
 
