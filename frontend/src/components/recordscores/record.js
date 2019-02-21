@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { Grid, Tooltip } from '@material-ui/core';
 import ScoreXtractor from '../charts/scorexctractor';
-import HeatMapChart from '../charts/heatmap/heatmapchart';
 import Switch from '@material-ui/core/Switch';
 import PieChart from '../charts/piechart/piechart';
 
