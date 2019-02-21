@@ -14,7 +14,7 @@ const ApiClient = {
         if (cookieJson && Object.keys(cookieJson).length > 0 && cookieJson["leastcountapp-servedviabackend"]) {
             return "";
         }
-        return "http://172.31.206.36:8080";
+        return "http://localhost:8080";
     },
 
     ROOT_URL: "",
