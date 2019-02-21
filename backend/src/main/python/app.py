@@ -39,6 +39,10 @@ if __name__ == '__main__':
     index_conf = {
         '/': {
             'tools.sessions.on': True,
+        },
+        '/static': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.on': './static'
         }
     }
     cherrypy.tools.CORS = cherrypy.Tool('before_handler', wc.MIN_CORS)
