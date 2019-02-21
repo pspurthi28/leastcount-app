@@ -77,6 +77,19 @@ class WebController:
         return json.loads(game.to_json())
 
 
+# This controller is responsible for rendering html/index.html where the React code is hosted
+class IndexController:
+
+    @cherrypy.expose
+    def index(self, gameid='default'):
+        cookie = cherrypy.response.cookie
+        if gameid is not 'default':
+            cherrypy.session['gameId'] = gameid
+            cookie["leastcountapp-gameid"] = gameid
+            cookie["leastcountapp-servedviabackend"] = True
+        return open('index.html')
+
+
 def CORS():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
     cherrypy.response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, HEAD, OPTIONS, DELETE"
