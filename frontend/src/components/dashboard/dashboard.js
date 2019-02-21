@@ -21,7 +21,7 @@ export default class Dashboard extends Component {
                 <div style={{ height: '500px' }}>
                     <HeatMapChart
                         mapData={Scorexctractor.getTotalsHeatMap(this.props.currentGame.activeGame)}
-                        mapLegendKey="round" /> />
+                        mapLegendKey="round" />
                 </div>
                 <div style={{ height: '500px' }}>
                     <Linechart mapData={lineMapData} />

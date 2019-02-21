@@ -1,6 +1,6 @@
-import src.main.python.domain.entities as entities
+import domain.entities as entities
 import json
-from src.main.python.datastore import connectionFactory as cF
+from datastore import connectionFactory as cF
 
 
 class Queries:

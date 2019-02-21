@@ -1,10 +1,10 @@
 import cherrypy
 import cherrypy_cors
-from src.main.python import configfile as configfile
-from src.main.python.datastore import connectionFactory as cF
-from src.main.python.datastore import queries as q
+import configfile as configfile
+from datastore import connectionFactory as cF
+from datastore import queries as q
 import json
-from src.main.python.services import gamesvc as gS
+from services import gamesvc as gS
 
 
 @cherrypy.expose

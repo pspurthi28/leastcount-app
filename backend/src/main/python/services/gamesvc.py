@@ -1,6 +1,6 @@
 import time
-from src.main.python.datastore import queries
-from src.main.python.domain import entities
+from datastore import queries
+from domain import entities
 
 
 class GameService:
@@ -28,7 +28,7 @@ class GameService:
 
     def create_round(self, gameId):
         game = self.queryHandler.get_game_by_game_id(gameId)
-        rID = str(len(game.rounds)+1)
+        rID = str(len(game.rounds) + 1)
         round = entities.Round(scores=[], roundID=rID)
         game.rounds.append(round)
         self.queryHandler.update_game(game=game, game_id=gameId)
@@ -80,7 +80,7 @@ class GameService:
         self.queryHandler.update_game(game_class, gameid)
         return self.queryHandler.get_game_by_game_id(gameid)
 
-    def game_totals(self,gameid):
+    def game_totals(self, gameid):
         game_class = self.queryHandler.get_game_by_game_id(gameid)
         playertotals = []
         players = game_class.players
@@ -95,8 +95,7 @@ class GameService:
             playertotals.append({"player": p, "total": total})
         return playertotals
 
-
-    def end_game(self,gameid):
+    def end_game(self, gameid):
         game_class = self.queryHandler.get_game_by_game_id(gameid)
         playtots = self.game_totals(gameid)
         playerscore = {}
