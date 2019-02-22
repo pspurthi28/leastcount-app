@@ -17,10 +17,8 @@ const ApiClient = {
         return "http://localhost:8080";
     },
 
-    ROOT_URL: "",
-
     APP_ROOT: () => {
-        if (!ApiClient.ROOT_URL) {
+        if (!Object.keys(ApiClient).includes('ROOT_URL')) {
             ApiClient.ROOT_URL = ApiClient.buildAppRoot()
         }
         return ApiClient.ROOT_URL;
