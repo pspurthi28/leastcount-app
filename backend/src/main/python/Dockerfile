@@ -28,4 +28,6 @@ RUN ls && \
 
 RUN cd backend/src/main/python/
 
+WORKDIR /usr/src/app/backend/src/main/python
+
 ENTRYPOINT [ "python", "app.py" ]
