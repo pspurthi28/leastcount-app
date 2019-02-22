@@ -35,8 +35,20 @@ if __name__ == '__main__':
             'cors.expose.on': True
         }
     }
+
+    index_conf = {
+        '/': {
+            'tools.sessions.on': True,
+            'tools.staticdir.root': os.path.abspath(os.getcwd())
+        },
+        '/static': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': './static'
+        }
+    }
     cherrypy.tools.CORS = cherrypy.Tool('before_handler', wc.MIN_CORS)
     cherrypy.tree.mount(web_controller, '/games', conf)
+    cherrypy.tree.mount(wc.IndexController(), '/', index_conf)
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
     cherrypy.engine.start()
     cherrypy.engine.block()

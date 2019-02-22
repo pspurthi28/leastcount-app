@@ -8,11 +8,31 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Aux from '../../hoc/auxFile';
 import TextField from '@material-ui/core/TextField';
 import ApiClient from '../client/apiclient';
+import CookieParser from '../utils/cookieParser';
 
 class ScorePrompt extends Component {
-    state = {
-        open: false,
-    };
+
+    constructor(props) {
+        super(props);
+        let openFlag = false;
+        let gameid = "";
+        if (props.renderModal) {
+            openFlag = true;
+            gameid = props.gameId
+        }
+        this.state = {
+            open: openFlag,
+            gameId: gameid
+        }
+    }
+
+    /* componentDidMount() {
+        let cookieJson = CookieParser.getCookieJson();
+        let urlParams = new URLSearchParams(window.location.search);
+        if (cookieJson && cookieJson['leastcountapp-gameid'] && urlParams.has('gameId') && cookieJson['leastcountapp-gameid'] === urlParams.get('gameid')) {
+            this.setState({ gameId: urlParams.get('gameid'), open: true });
+        }
+    } */
 
     handleOpen = () => {
         this.setState({ open: true });
@@ -29,11 +49,11 @@ class ScorePrompt extends Component {
 
     gameIdChange = (event) => {
         this.setState({ gameId: event.target.value })
-      };
-    
-      nameChange = (event) => {
+    };
+
+    nameChange = (event) => {
         this.setState({ playerName: event.target.value })
-      };
+    };
 
     render() {
 
@@ -49,19 +69,20 @@ class ScorePrompt extends Component {
                     <DialogTitle id="alert-dialog-title">{"Identify yourself"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Please enter Game Id & Name                            
+                            Please enter Game Id & Name
                         </DialogContentText>
                         <TextField
-                                style={{'marginRight' : '5px'}}
-                                id="outlined-gameID-input"
-                                label="Game ID"
-                                type="text"
-                                name="game_id"
-                                autoComplete="Game_ID"
-                                margin="normal"
-                                variant="outlined"
-                                onChange={this.gameIdChange}
-                                />
+                            value={this.state.gameId}
+                            style={{ 'marginRight': '5px' }}
+                            id="outlined-gameID-input"
+                            label="Game ID"
+                            type="text"
+                            name="game_id"
+                            autoComplete="Game_ID"
+                            margin="normal"
+                            variant="outlined"
+                            onChange={this.gameIdChange}
+                        />
                         <TextField
                             id="outlined-name-input"
                             label="Name"
@@ -71,15 +92,15 @@ class ScorePrompt extends Component {
                             margin="normal"
                             variant="outlined"
                             onChange={this.nameChange}
-                            />
+                        />
                     </DialogContent>
-                    <DialogActions>                        
+                    <DialogActions>
                         <Button onClick={this.handleClose} color="secondary" variant="contained">
                             Close
                         </Button>
                         <Button onClick={this.joinGameHandler} color="primary" autoFocus variant="contained">
-                            Join 
-                        </Button>                        
+                            Join
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </Aux>
