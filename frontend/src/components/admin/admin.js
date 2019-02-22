@@ -5,6 +5,7 @@ import StopRound from '@material-ui/icons/TimerOff';
 import StopGame from '@material-ui/icons/Stop';
 import AddRound from '@material-ui/icons/Queue';
 import { GridList, Grid, Paper, Chip, Typography, Table, TableHead, TableRow, TableCell, TableBody, Tooltip } from '@material-ui/core';
+import QrCardContainer from './qrcard';
 
 
 import './admin.css';
@@ -25,12 +26,8 @@ export default class Admin extends Component {
         let renderContent = "";
         let gameId = this.props.currentGame.activeGameId ? this.props.currentGame.activeGameId : '';
         renderContent =
-            <Grid item xs={12}>
-                <Paper>
-                    <Typography variant="subtitle2" >
-                        Game Id: {gameId}
-                    </Typography>
-                </Paper>
+            <Grid item xs={12} style={{margin : '5px', padding : '5px'}}>                
+                <QrCardContainer {...this.props}/>                
             </Grid>
         return renderContent;
     }
@@ -73,7 +70,7 @@ export default class Admin extends Component {
                 direction="column"
                 alignItems="center"
                 justify="center" >
-                <GridList style={{ 'marginTop': '10px', 'marginBottom': '10px' }}
+                {/*<GridList style={{ 'marginTop': '10px', 'marginBottom': '10px' }}
                     cols={36}
                     cellHeight="auto" >
                     <Tooltip title="CreateGame" aria-label="CreateGame" placement="top">
@@ -96,7 +93,7 @@ export default class Admin extends Component {
                             <StopRound />
                         </Fab>
                     </Tooltip>
-                </GridList >
+                </GridList > */}
                 {this.getGameId()}
                 {this.getTableContent(this.props.currentGame)}
             </Grid>
