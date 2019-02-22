@@ -81,11 +81,11 @@ class WebController:
 class IndexController:
 
     @cherrypy.expose
-    def index(self, gameid='default'):
+    def index(self, gameId='default'):
         cookie = cherrypy.response.cookie
-        if gameid is not 'default':
-            cherrypy.session['gameId'] = gameid
-            cookie["leastcountapp-gameid"] = gameid
+        if gameId is not 'default':
+            cherrypy.session['gameId'] = gameId
+            cookie["leastcountapp-gameid"] = gameId
             cookie["leastcountapp-servedviabackend"] = True
         return open('index.html')
 
