@@ -35,7 +35,7 @@ class TopNavBar extends Component {
       && cookieJson['leastcountapp-gameid'] === urlParams.get('gameId')
       && !sessionStorage.getItem("playerProfile")
       ) {
-      sessionStorage.setItem("gameId", urlParams.get('gameId'));
+      sessionStorage.setItem("gameId", JSON.stringify({ 'gameId': urlParams.get('gameId')}));
       return { gameId: urlParams.get('gameId'), renderModal: true };
     }
     return {};
