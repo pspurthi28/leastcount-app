@@ -5,7 +5,7 @@ const CookieParser = {
         let cookies = allcookieString.split(";");
         cookies.forEach(cookie => {
             let entry = cookie.split("=");
-            cookieJson[entry[0]] = entry[1];
+            cookieJson[entry[0].replace(/\s/g, '')] = entry[1].replace(/\s/g, '');
         });
         return cookieJson;
     }

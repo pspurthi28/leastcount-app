@@ -1,17 +1,10 @@
 import React from 'react';
+import CookieParser from '../utils/cookieParser';
 
 const ApiClient = {
 
     buildAppRoot: () => {
-        let cookieJson = {};
-        let allcookieString = document.cookie;
-        let cookies = allcookieString.split(";");
-        cookies.forEach(cookie => {
-            if (cookie) {
-                let entry = cookie.split("=");
-                cookieJson[entry[0].replace(/\s/g, '')] = entry[1].replace(/\s/g, '');
-            }
-        })
+        let cookieJson = CookieParser.getCookieJson();
         console.log(cookieJson);
         if (cookieJson && Object.keys(cookieJson).length > 0 && cookieJson["leastcountapp-servedviabackend"]) {
             return "";

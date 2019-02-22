@@ -27,15 +27,16 @@ class TopNavBar extends Component {
     },
   };
 
+  // TODO simplify this logic
   passGameInfoFromCookie() {
     let cookieJson = CookieParser.getCookieJson();
     let urlParams = new URLSearchParams(window.location.search);
-    if (cookieJson && cookieJson['leastcountapp-gameid'] 
-      && urlParams.has('gameId') 
+    if (cookieJson && cookieJson['leastcountapp-gameid']
+      && urlParams.has('gameId')
       && cookieJson['leastcountapp-gameid'] === urlParams.get('gameId')
-      && !sessionStorage.getItem("playerProfile")
-      ) {
-      sessionStorage.setItem("gameId", JSON.stringify({ 'gameId': urlParams.get('gameId')}));
+      && (!sessionStorage.getItem("playerProfile") || (sessionStorage.getItem("playerProfile") && JSON.parse(sessionStorage.getItem("playerProfile").gameId !== urlParams.get('gameId'))))
+    ) {
+      sessionStorage.setItem("gameId", JSON.stringify({ 'gameId': urlParams.get('gameId') }));
       return { gameId: urlParams.get('gameId'), renderModal: true };
     }
     return {};
