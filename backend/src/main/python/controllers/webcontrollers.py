@@ -83,10 +83,10 @@ class IndexController:
     @cherrypy.expose
     def index(self, gameId='default'):
         cookie = cherrypy.response.cookie
+        cookie["leastcountapp-servedviabackend"] = True
         if gameId is not 'default':
             cherrypy.session['gameId'] = gameId
             cookie["leastcountapp-gameid"] = gameId
-            cookie["leastcountapp-servedviabackend"] = True
         return open('index.html')
 
 

@@ -26,6 +26,6 @@ RUN ls && \
     apk del nodejs && \
     rm -r frontend/node_modules
 
-COPY dockertestcontroller.py .
+RUN cd backend/src/main/python/
 
-CMD [ "python", "./dockertestcontroller.py" ]
+ENTRYPOINT [ "python", "app.py" ]
