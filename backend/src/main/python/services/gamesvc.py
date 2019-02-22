@@ -37,12 +37,14 @@ class GameService:
     def player_score(self, rnd_scr_req):
         game_class = self.queryHandler.get_game_by_game_id(rnd_scr_req['gameId'])
         currentplyr = None
+        playcount = self.player_count(rnd_scr_req['gameId'])
+        print("player count: ", playcount)
         plyrs = game_class.players
         print(plyrs)
         for p in plyrs:
             if p["playerID"] == rnd_scr_req['playerId']:
                 currentplyr = p
-        rs = entities.RoundScore(player=currentplyr, score=rnd_scr_req['score'])
+        rs = {"player": currentplyr, "score": rnd_scr_req['score']}
         currentrnd = None
         rnds = game_class.rounds
         for r in rnds:
@@ -51,32 +53,18 @@ class GameService:
         if "scores" not in currentrnd.keys():
             currentrnd['scores'] = []
         currentrnd['scores'].append(rs)
+        scrcnt = len(currentrnd['scores'])
+        if playcount == scrcnt:
+            game_class = self.prep_end_round(game_class)
+            rID = str(len(game_class.rounds) + 1)
+            round = entities.Round(scores=[], roundID=rID)
+            game_class.rounds.append(round)
         self.queryHandler.update_game(game_class, rnd_scr_req['gameId'])
         return self.queryHandler.get_game_by_game_id(rnd_scr_req['gameId'])
 
     def end_round(self, gameid):
         game_class = self.queryHandler.get_game_by_game_id(gameid)
-        currentrnd = None
-        rnds = game_class.rounds
-        for r in rnds:
-            if r["isCompleted"] == False:
-                currentrnd = r
-        roundscores = currentrnd["scores"]
-        playerscore = {}
-        scores = []
-        for s in roundscores:
-            playerscore[s['player']["playerID"]] = s["score"]
-            scores.append(s["score"])
-        winnerID = min(playerscore, key=lambda k: playerscore[k])
-        showcount = min(scores)
-        plyrs = game_class.players
-        winner = None
-        for p in plyrs:
-            if p["playerID"] == winnerID:
-                winner = p
-        currentrnd["isCompleted"] = True
-        currentrnd["rWinner"] = winner
-        currentrnd["showcount"] = showcount
+        game_class = self.prep_end_round(game_class)
         self.queryHandler.update_game(game_class, gameid)
         return self.queryHandler.get_game_by_game_id(gameid)
 
@@ -88,10 +76,11 @@ class GameService:
         for p in players:
             total = 0
             for r in rounds:
-                roundscores = r['scores']
-                for rs in roundscores:
-                    if rs["player"]["playerID"] == p["playerID"]:
-                        total += rs["score"]
+                if "scores" in r.keys() and r["isCompleted"] is True:
+                    roundscores = r['scores']
+                    for rs in roundscores:
+                        if rs["player"]["playerID"] == p["playerID"]:
+                            total += rs["score"]
             playertotals.append({"player": p, "total": total})
         return playertotals
 
@@ -114,3 +103,39 @@ class GameService:
         game_class.wintotal = wintotal
         self.queryHandler.update_game(game_class, gameid)
         return self.queryHandler.get_game_by_game_id(gameid)
+
+    def player_count(self, gameid):
+        playtots = self.game_totals(gameid)
+        playcount = 0
+        for t in playtots:
+            if t["total"] <300:
+                playcount = playcount+1
+        return playcount
+
+    def prep_end_round(self,game_class):
+        currentrnd = None
+        rnds = game_class.rounds
+        for r in rnds:
+            if r["isCompleted"] == False:
+                currentrnd = r
+        if "scores" not in r.keys():
+            return game_class
+        roundscores = currentrnd["scores"]
+        print (roundscores)
+        playerscore = {}
+        scores = []
+        for s in roundscores:
+            player = s['player']
+            playerscore[player["playerID"]] = s["score"]
+            scores.append(s["score"])
+        winnerID = min(playerscore, key=lambda k: playerscore[k])
+        showcount = min(scores)
+        plyrs = game_class.players
+        winner = None
+        for p in plyrs:
+            if p["playerID"] == winnerID:
+                winner = p
+        currentrnd["isCompleted"] = True
+        currentrnd["rWinner"] = winner
+        currentrnd["showcount"] = showcount
+        return game_class
