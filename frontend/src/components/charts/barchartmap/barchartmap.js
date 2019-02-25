@@ -29,6 +29,7 @@ export default class BarGraph extends Component {
                     "bottom": 50,
                     "left": 60
                 }}
+                labelTextColor='white'
                 padding={0.3}
                 groupMode="grouped"
                 colorBy={this.colorPicker}

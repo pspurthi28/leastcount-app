@@ -72,11 +72,4 @@ export default class GameParent extends Component {
             joinGameHandler={this.joinGameHandler}
         />
     }
-
-
-
-
-
-
-
 }
