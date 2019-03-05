@@ -9,15 +9,16 @@ export default class PieChart extends Component {
 
     colorPicker = (data) => {
         let baseColor = 'hsl(COLOR, 90%, 50%)';
-        let colorval = (1 - (data.value / this.getMaxValue())) * 120;
+        let boundaries = this.getBoundaries();
+        let colorval = ((boundaries.max - data.value) / (boundaries.max - boundaries.min)) * 120;
         return baseColor.replace("COLOR", colorval);
     }
 
-    getMaxValue(){
+    getBoundaries(){
         let scores = this.props.mapData.map(entry => {
            return entry.value
         });
-        return Math.max(...scores);
+        return {'max' : Math.max(...scores), 'min' : Math.min(...scores)};
     }
 
     render() {

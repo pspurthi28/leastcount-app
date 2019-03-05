@@ -6,6 +6,18 @@ import HeatMapChart from '../charts/heatmap/heatmapchart';
 
 export default class Dashboard extends Component {
 
+    componentDidMount() {
+        if(this.props.currentGame.activeGame){
+          this.gameInterval = setInterval(() => this.props.reconcileGameData(this.props.currentGame.activeGame.gameID), 30000);
+        }
+    }
+
+    componentWillUnmount(){
+        if(this.gameInterval){
+            clearInterval(this.gameInterval);
+        }
+    }
+
     constructor(props) {
         super(props);
     }

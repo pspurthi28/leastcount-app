@@ -10,6 +10,9 @@ class GameService:
 
     def join_game(self, game_join_req):
         game = self.queryHandler.get_game_by_game_id(game_join_req['gameId'])
+        for pl in game.players:
+            if pl["firstname"] == game_join_req['name']:
+                return {"gameId": game_join_req['gameId'], "playerId": pl["playerID"]}
         ts = time.time()
         name = game_join_req['name']
         generated_player_id = name + str(ts)

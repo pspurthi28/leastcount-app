@@ -3,6 +3,7 @@ import TopNavBar from '../appbar/appbar';
 import RecordScore from '../recordscores/record';
 import Admin from '../admin/admin';
 import Dashboard from '../dashboard/dashboard';
+import UserAcknowledgeSnack from '../feedback/userAckConfirmation';
 
 class Layout extends Component {
 
@@ -31,6 +32,7 @@ class Layout extends Component {
     <div>
       <TopNavBar key={"navbar"} tabChangeHandler = {this.tabChangeHandler} {...this.props} />
       {displayTab}
+      <UserAcknowledgeSnack {...this.props}/>
     </div>
     );
   }

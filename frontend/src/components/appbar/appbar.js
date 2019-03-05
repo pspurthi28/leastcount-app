@@ -34,7 +34,7 @@ class TopNavBar extends Component {
     if (cookieJson && cookieJson['leastcountapp-gameid']
       && urlParams.has('gameId')
       && cookieJson['leastcountapp-gameid'] === urlParams.get('gameId')
-      && (!sessionStorage.getItem("playerProfile") || (sessionStorage.getItem("playerProfile") && JSON.parse(sessionStorage.getItem("playerProfile").gameId !== urlParams.get('gameId'))))
+      && (!sessionStorage.getItem("playerProfile"))//|| (sessionStorage.getItem("playerProfile") && JSON.parse(sessionStorage.getItem("playerProfile").gameId !== urlParams.get('gameId'))))
     ) {
       sessionStorage.setItem("gameId", JSON.stringify({ 'gameId': urlParams.get('gameId') }));
       return { gameId: urlParams.get('gameId'), renderModal: true };
