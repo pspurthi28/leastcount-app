@@ -37,7 +37,7 @@ class GameService:
     def player_score(self, rnd_scr_req):
         game_class = self.queryHandler.get_game_by_game_id(rnd_scr_req['gameId'])
         currentplyr = None
-        playcount = self.player_count(rnd_scr_req['gameId'])
+        playcount = self.player_count(rnd_scr_req['gameId'], game_class.threshold)
         print("player count: ", playcount)
         plyrs = game_class.players
         print(plyrs)
@@ -52,7 +52,19 @@ class GameService:
                 currentrnd = r
         if "scores" not in currentrnd.keys():
             currentrnd['scores'] = []
-        currentrnd['scores'].append(rs)
+
+# this section avoids duplicate score submissions
+        existing_roundscore = None
+        if len(currentrnd['scores']) > 0:
+            for iterable_score in currentrnd['scores']:
+                iterable_player = iterable_score['player']
+                if iterable_player['playerID'] == rnd_scr_req['playerId']:
+                    existing_roundscore = iterable_score
+                    break
+        if existing_roundscore:
+            existing_roundscore['score'] = rnd_scr_req['score']
+        else:
+            currentrnd['scores'].append(rs)
         scrcnt = len(currentrnd['scores'])
         if playcount == scrcnt:
             game_class = self.prep_end_round(game_class)
@@ -104,15 +116,15 @@ class GameService:
         self.queryHandler.update_game(game_class, gameid)
         return self.queryHandler.get_game_by_game_id(gameid)
 
-    def player_count(self, gameid):
+    def player_count(self, gameid, threshold):
         playtots = self.game_totals(gameid)
         playcount = 0
         for t in playtots:
-            if t["total"] <300:
-                playcount = playcount+1
+            if t["total"] < threshold:
+                playcount = playcount + 1
         return playcount
 
-    def prep_end_round(self,game_class):
+    def prep_end_round(self, game_class):
         currentrnd = None
         rnds = game_class.rounds
         for r in rnds:
@@ -121,7 +133,7 @@ class GameService:
         if "scores" not in r.keys():
             return game_class
         roundscores = currentrnd["scores"]
-        print (roundscores)
+        print(roundscores)
         playerscore = {}
         scores = []
         for s in roundscores:
@@ -139,4 +151,3 @@ class GameService:
         currentrnd["rWinner"] = winner
         currentrnd["showcount"] = showcount
         return game_class
-
